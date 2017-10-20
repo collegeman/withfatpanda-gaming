@@ -17,7 +17,8 @@ trait CanRollDice {
    *   array, with one element for each die and its value, e.g., 
    *   array('2d6' => array(5, 4), '1d12' => array(7))
    */
-  function rollDice($dice = '2d6')
+
+  function rollDice(String $dice = '2d6')
   {
     // hint #1: the function rand($x, $y) returns a random number
     // between $x and $y including the values $x and $y, such that
@@ -37,19 +38,39 @@ trait CanRollDice {
     //     '1d12' => array(7)
     //   )
     // )
-    
-    $result = array();
 
+    // hint #4: to see what value is stored in a variable,
+    // use print_r(), e.g., print_r($dice) to print the
+    // contents to the screen; another handy trick is to
+    // follow a call to print_r() by a call to exit(), thus
+    // terminating your script and making it easier to read
+    // the output that you were investigating, like so:
+    // print_r($someVariable); exit;.
+  
     // process the input, determine the dice rolls
-    
+    $result = [
+      'total' => 0,
+      'dice' => []
+    ];
+
+    $rolls = explode(' ', $dice);
+   
     // roll the dice, capture each individual result
-    
-    // sum the results to build "total"
+    foreach($rolls as $roll) {
+      list($dice, $sides) = explode('d', $roll);
+      $result['dice'][$roll] = [];
+      for($i=0; $i<$dice; $i++) {
+        $value = rand(1, $sides);
+        $result['dice'][$roll][] = $value;
+        $result['total'] += $value;
+      }
+    }
+
+    print_r($result);
 
     // put total and all individual dice into $result
 
     return $result;
   }
-
 
 }
